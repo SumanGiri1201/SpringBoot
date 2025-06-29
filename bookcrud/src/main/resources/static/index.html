@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book CRUD</title>
+    <style>
+        input { margin: 5px; }
+        button { margin: 5px; }
+        ul { list-style: none; padding: 0; }
+    </style>
+</head>
+<body>
+<h2>Book Details</h2>
+
+<form id="book-form">
+    <input type="hidden" id="book-id">
+    <input type="text" id="title" placeholder="Title" required>
+    <input type="text" id="author" placeholder="Author" required>
+    <button type="submit">Save Book</button>
+</form>
+
+<h3>Book List:</h3>
+<ul id="book-list"></ul>
+
+<script>
+    function loadBooks() {
+        fetch('/books')
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById('book-list');
+                list.innerHTML = '';
+                data.forEach(book => {
+                    const item = document.createElement('li');
+                    item.innerHTML = `
+                        <strong>${book.title}</strong> by ${book.author}
+                        <button onclick="editBook(${book.id}, '${book.title}', '${book.author}')">✏️ Edit</button>
+                        <button onclick="deleteBook(${book.id})">❌ Delete</button>
+                    `;
+                    list.appendChild(item);
+                });
+            });
+    }
+
+    document.getElementById('book-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('book-id').value;
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
+
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/books/${id}` : '/books';
+
+        fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, author })
+        }).then(() => {
+            document.getElementById('book-form').reset();
+            loadBooks();
+        });
+    });
+
+    function editBook(id, title, author) {
+        document.getElementById('book-id').value = id;
+        document.getElementById('title').value = title;
+        document.getElementById('author').value = author;
+    }
+
+    function deleteBook(id) {
+        fetch(`/books/${id}`, {
+            method: 'DELETE'
+        }).then(() => loadBooks());
+    }
+
+    loadBooks();
+</script>
+</body>
+</html>
