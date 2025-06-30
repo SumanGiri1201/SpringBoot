@@ -1,0 +1,5 @@
+Thoughts Behnd the Code:
+
+This is a program that tells whether the app is running fine or not by showing "UP" or "DOWN". Used boolean isUp that stores either true or false.If isup is true then the API returns "Health is UP" similarly, if it is false then the API will return"Health is  DOWN". Added another API to change the value of isUp by using toggle. The toggle will help to change the API status that everytime when I call the second API the value will switch .I used the if-else statements to show the conditions.
+ 
+Also  used a @RestController annotation and @GetMaping to create GET API so that whenever i use /health URL it returns the method and shows the status and also for changing the status i used /toggle URL. 
