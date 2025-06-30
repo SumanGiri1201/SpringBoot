@@ -1,0 +1,4 @@
+Thoughts behind the code:
+
+Firstly added 2 users , User A and User B and each user has an id, name and balance.  Used @RestController to define the class which was going to handle the HTTP request and @RequestMapping("/api") to set the path of the URL in controller and @GetMapping to call the API directly through the URL. So, when I type the URL  /api/send/500, it will automatically transfers 500 from User A to User B as long as User A has enough balance to transfer. If the limit exceeds it will reflect as Insufficient Balance. Also added another URL /api/receive to check how much money User B has received.  Used REST API and JPA for database. 
+
